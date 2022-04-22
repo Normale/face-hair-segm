@@ -129,8 +129,7 @@ dmypy.json
 
 
 /*.json
-*.txt
-
+/docs/*.txt
 #VSCODE
 .vscode/*
 !.vscode/settings.json
