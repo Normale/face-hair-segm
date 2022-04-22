@@ -136,3 +136,8 @@ dmypy.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+#Project specific
+/demo/**/*.png
+/demo/**/*.mp4
