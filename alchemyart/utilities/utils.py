@@ -3,6 +3,10 @@ from pathlib import Path
 
 
 def copy_subfolder_files(source: Path, destination: Path):
+    if not destination.exists():
+        print(f"Creating directory {destination}")
+        destination.mkdir(parents=True, exist_ok=True)
+
     c = 0
     for p in source.rglob("*"):
         if p.is_file():
