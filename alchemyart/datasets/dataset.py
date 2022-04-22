@@ -74,7 +74,7 @@ class RawImagesDataset(Dataset):
 
             annotation = Annotation(i, i, 0, 0, segmentations, bbox, area, "")
             coco_img = COCOImage(
-                i, file_name=name, width=w, height=h, annotations=annotation
+                i, file_name=str(img_path), width=w, height=h, annotations=[annotation]
             )
             coco.images.append(coco_img)
         return coco
