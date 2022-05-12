@@ -5,7 +5,7 @@ from typing import Tuple
 from itertools import chain
 import shutil
 from tqdm.notebook import tqdm
-
+import cv2
 
 def copy_subfolder_files(source: Path, destination: Path):
     if not destination.exists():
@@ -47,9 +47,18 @@ def split_dataset(proportions: Tuple[float], source_x: Path, source_y: Path, x_p
             shutil.move(str(x_item), str(folder_x_path))
             shutil.move(str(y_item), str(folder_y_path))
 
+def save_masks_as_black_white(src, dest):
+    dest.mkdir(parents=True, exist_ok=True)
+    all_files = np.array(list(src.iterdir()))
+    for f in all_files:
+        print(f)
+        img = cv2.imread(str(f), cv2.IMREAD_UNCHANGED)
+        person = img[:, :, 3] != 0
+        person = person.astype(np.uint8)
+        person *=255
+        cv2.imwrite(str(dest / f.name).replace(".png", ".jpg"), person.astype(np.uint8))
 
-            
-        
+
 if __name__ == "__main__":
     # source = Path("D:/datasets/AISegment/clip_img")
     # destination = Path("D:/datasets/AISegment_whole/x")
@@ -59,10 +68,13 @@ if __name__ == "__main__":
     # destination = Path("D:/datasets/AISegment_whole/y")
     # copy_subfolder_files(source, destination)
 
-    src_x = Path(r"D:\datasets\AISegment_test\x")
+    # src_x = Path(r"D:\datasets\AISegment_test\x")
     src_y = Path(r"D:\datasets\AISegment_test\y")
-    general = Path(r"D:\datasets\AISegment_test\split\x")
-    x_paths = (general / "train", general / "val", general / "test")
-    general = Path(r"D:\datasets\AISegment_test\split\y")
-    y_paths = (general / "train", general / "val", general / "test")
-    split_dataset((0.5,0.3,0.2),src_x, src_y, x_paths, y_paths)
+    # general = Path(r"D:\datasets\AISegment_test\split\x")
+    # x_paths = (general / "train", general / "val", general / "test")
+    # general = Path(r"D:\datasets\AISegment_test\split\y")
+    # y_paths = (general / "train", general / "val", general / "test")
+    # split_dataset((0.5,0.3,0.2),src_x, src_y, x_paths, y_paths)
+
+    dest_black = Path(r"D:\datasets\AISegment_test\y_black")
+    save_masks_as_black_white(src_y, dest_black)
